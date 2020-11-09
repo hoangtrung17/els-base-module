@@ -7,21 +7,18 @@ export enum SortType {
 
 registerEnumType(SortType, { name: 'SortType' })
 
-export class SearchInput {
-  fieldName?: string
-  keyword?: string
+export interface SearchInput {
+  fieldName: string
+  keyword: string
 }
 
 export interface WhereInput {
   [fieldName:string]: string
 }
 
-export class SortInput {
-  @Field()
-  sortBy?: string
-
-  @Field(type=> SortType)
-  sortType?: SortType
+export interface SortInput {
+  sortBy: string
+  sortType: SortType
 }
 
 @InputType()
