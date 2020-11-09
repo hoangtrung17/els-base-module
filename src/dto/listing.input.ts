@@ -32,7 +32,7 @@ export class PaginationInput {
 
 export interface ListingInput {
   where?: WhereInput
-  search ?: [SearchInput]
+  search ?: SearchInput[]
   sort?: SortInput
   pagination: PaginationInput
 }
