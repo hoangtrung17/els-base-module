@@ -1,7 +1,7 @@
 {
   "name": "@tony_win2win/elasticsearch-base-module",
   "version": "1.0.2",
-  "description": "Common files of w2w",
+  "description": "Elasticsearch base-module w2w",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
@@ -32,5 +32,13 @@
     "class-validator": "^0.12.2",
     "dotenv": "^8.2.0",
     "rxjs": "^6.6.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoangtrung17/els-base-module.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hoangtrung17/els-base-module/issues"
+  },
+  "homepage": "https://github.com/hoangtrung17/els-base-module#readme"
 }
