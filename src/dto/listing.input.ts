@@ -12,7 +12,7 @@ export class SearchInput {
   keyword?: string
 }
 
-export class WhereInput {
+export interface WhereInput {
   [fieldName:string]: string
 }
 
