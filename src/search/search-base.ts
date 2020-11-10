@@ -59,10 +59,8 @@ export class SearchBase {
         const results: any[] = []
 
         const condition = {
-            match: {
-                ids: {
-                    values: ids
-                }
+            ids: {
+                values: ids
             }
         }
 
