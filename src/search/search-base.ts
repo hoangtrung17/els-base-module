@@ -133,7 +133,9 @@ export class SearchBase {
                 size: 1,
                 from: 0,
                 query: {
-                    must: arrMust
+                    bool: {
+                        must: arrMust
+                    }
                 }
             },
         })
