@@ -120,6 +120,28 @@ export class SearchBase {
         return hits.length ? hits[0]._source : null
     }
 
+    async findOneByManyWhere(wheres: WhereInput[], docsIndexName: string) {
+        let arrMust: any[] = []
+
+        for (const where of wheres) {
+            arrMust=[ ...arrMust, {match: where}]
+        }
+
+        const { body } = await this.esService.search({
+            index: docsIndexName,
+            body: {
+                size: 1,
+                from: 0,
+                query: {
+                    must: arrMust
+                }
+            },
+        })
+        const hits = body.hits.hits
+
+        return hits.length ? hits[0]._source : null
+    }
+
     async searchAll(args: ListingInput, docsIndexName: string, where?: WhereInput) {
         const results: any[] = []
         const condition = where ? where : this.buildGettingParams(args)
