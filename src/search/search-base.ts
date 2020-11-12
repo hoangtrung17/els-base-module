@@ -90,17 +90,7 @@ export class SearchBase {
             }
         }
 
-        const { body } = await this.esService.search({
-            index: docsIndexName,
-            body: {
-                size: 1,
-                from: 0,
-                query: condition
-            },
-        })
-        const hits = body.hits.hits
-
-        return hits.length ? hits[0]._source : null
+        const { body } = await this.esService.get
     }
 
     async findOneByQuery(where: WhereInput, docsIndexName: string) {
