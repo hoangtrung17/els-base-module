@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e144e0bf-0ec0-4165-ae14-aee1fbf25d0b" name="Default Changelist" comment="" />
+    <list default="true" id="e144e0bf-0ec0-4165-ae14-aee1fbf25d0b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1k39pxg96qtXiHypM4ID2vIaPmW" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -17,7 +23,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -34,6 +41,7 @@
       <option name="presentableId" value="Default" />
       <updated>1604918595638</updated>
       <workItem from="1604918596742" duration="9282000" />
+      <workItem from="1605057546710" duration="1551000" />
     </task>
     <servers />
   </component>
@@ -41,17 +49,24 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="789" y="359" key="SettingsEditor" timestamp="1605065178259">
+      <screen x="0" y="0" width="2560" height="1440" />
+    </state>
+    <state x="789" y="359" key="SettingsEditor/0.0.2560.1440@0.0.2560.1440" timestamp="1605065178259" />
     <state x="661" y="295" width="598" height="490" key="find.popup" timestamp="1604935878210">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="661" y="295" width="598" height="490" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1604935878210" />
+    <state x="945" y="331" key="search.everywhere.popup" timestamp="1605060112079">
+      <screen x="0" y="0" width="2560" height="1440" />
+    </state>
+    <state x="945" y="331" key="search.everywhere.popup/0.0.2560.1440@0.0.2560.1440" timestamp="1605060112079" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/search/search-base.ts</url>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

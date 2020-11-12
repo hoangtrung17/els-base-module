@@ -55,7 +55,7 @@ export class SearchBase {
         )
     }
 
-    async searchByIds(args: Pagination, docsIndexName: string, ids?: string[]) {
+    async searchByIds(args: Pagination, docsIndexName: string, ids: string[]) {
         const results: any[] = []
 
         const condition = {
@@ -81,6 +81,44 @@ export class SearchBase {
             results,
             total: body.hits.total.value
         }
+    }
+
+    async findOneById(docsIndexName: string, id: string) {
+        const condition = {
+            ids: {
+                values: [id]
+            }
+        }
+
+        const {body} = await this.esService.search({
+            index: docsIndexName,
+            body: {
+                size: 1,
+                from: 0,
+                query: condition
+            },
+        })
+        const hits = body.hits.hits
+
+        return hits.length ? hits[0]._source: null
+    }
+
+    async findOneByQuery(where: WhereInput, docsIndexName: string) {
+        const condition = {
+            match: where
+        }
+
+        const {body} = await this.esService.search({
+            index: docsIndexName,
+            body: {
+                size: 1,
+                from: 0,
+                query: condition
+            },
+        })
+        const hits = body.hits.hits
+
+        return hits.length ? hits[0]._source: null
     }
 
     async searchAll(args: ListingInput, docsIndexName: string, where?: WhereInput) {
