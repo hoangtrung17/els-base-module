@@ -1,6 +1,6 @@
 {
   "name": "@tony_win2win/elasticsearch-base-module",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "Elasticsearch base-module w2w",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
