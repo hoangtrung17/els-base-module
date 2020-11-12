@@ -1,7 +1,6 @@
 import { BadRequestException } from '@nestjs/common'
 import { ElasticsearchService } from '@nestjs/elasticsearch'
-import { Pagination } from "../dto/pagination";
-import { ListingInput, WhereInput } from "../dto/listing.input";
+import { ListingInput, PaginationInput, WhereInput } from "../dto/listing.input";
 
 export class SearchBase {
     constructor(public readonly esService: ElasticsearchService) {
@@ -55,7 +54,7 @@ export class SearchBase {
         )
     }
 
-    async searchByIds(args: Pagination, docsIndexName: string, ids: string[]) {
+    async searchByIds(args: PaginationInput, docsIndexName: string, ids: string[]) {
         const results: any[] = []
 
         const condition = {
