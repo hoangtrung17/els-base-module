@@ -1,4 +1,5 @@
 import { Field, InputType, Int, registerEnumType } from "@nestjs/graphql"
+import {PaginationBase} from '@tony_win2win/common'
 
 export enum SortType {
   asc = 'asc',
@@ -22,7 +23,7 @@ export interface SortInput {
 }
 
 @InputType()
-export class PaginationInput {
+export class PaginationInput implements PaginationBase{
   @Field(type => Int)
   limit?: number
 
