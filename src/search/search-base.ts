@@ -1,7 +1,7 @@
-import {BadRequestException} from '@nestjs/common'
-import {ElasticsearchService} from '@nestjs/elasticsearch'
-import {Pagination} from "../dto/pagination";
-import {ListingInput, WhereInput} from "../dto/listing.input";
+import { BadRequestException } from '@nestjs/common'
+import { ElasticsearchService } from '@nestjs/elasticsearch'
+import { Pagination } from "../dto/pagination";
+import { ListingInput, WhereInput } from "../dto/listing.input";
 
 export class SearchBase {
     constructor(public readonly esService: ElasticsearchService) {
@@ -9,7 +9,7 @@ export class SearchBase {
 
     buildGettingParams(args: ListingInput) {
         const searchFields = args.search || []
-        const params = searchFields.length ? Object.assign({}, ...searchFields.map(field => ({[field.fieldName]: field.keyword}))) : {}
+        const params = searchFields.length ? Object.assign({}, ...searchFields.map(field => ({ [field.fieldName]: field.keyword }))) : {}
         return params
     }
 
@@ -64,7 +64,7 @@ export class SearchBase {
             }
         }
 
-        const {body} = await this.esService.search({
+        const { body } = await this.esService.search({
             index: docsIndexName,
             body: {
                 size: args.limit,
@@ -77,7 +77,7 @@ export class SearchBase {
             results.push(item._source)
         })
 
-        return args.limit === 1 ? {results, total: body.hits.total.value, data: results[0]} : {
+        return args.limit === 1 ? { results, total: body.hits.total.value, data: results[0] } : {
             results,
             total: body.hits.total.value
         }
@@ -90,7 +90,7 @@ export class SearchBase {
             }
         }
 
-        const {body} = await this.esService.search({
+        const { body } = await this.esService.search({
             index: docsIndexName,
             body: {
                 size: 1,
@@ -100,7 +100,7 @@ export class SearchBase {
         })
         const hits = body.hits.hits
 
-        return hits.length ? hits[0]._source: null
+        return hits.length ? hits[0]._source : null
     }
 
     async findOneByQuery(where: WhereInput, docsIndexName: string) {
@@ -108,7 +108,7 @@ export class SearchBase {
             match: where
         }
 
-        const {body} = await this.esService.search({
+        const { body } = await this.esService.search({
             index: docsIndexName,
             body: {
                 size: 1,
@@ -118,14 +118,14 @@ export class SearchBase {
         })
         const hits = body.hits.hits
 
-        return hits.length ? hits[0]._source: null
+        return hits.length ? hits[0]._source : null
     }
 
     async searchAll(args: ListingInput, docsIndexName: string, where?: WhereInput) {
         const results: any[] = []
         const condition = where ? where : this.buildGettingParams(args)
 
-        const query = where || args.search ? {match: condition} : {
+        const query = where || args.search ? { match: condition } : {
             match_all: {}
         }
 
@@ -135,7 +135,7 @@ export class SearchBase {
                     'order': args.sort.sortType
                 }
             }] : []
-        const {body} = await this.esService.search({
+        const { body } = await this.esService.search({
             index: docsIndexName,
             body: {
                 size: args.pagination.limit,
@@ -149,14 +149,14 @@ export class SearchBase {
             results.push(item._source)
         })
 
-        return {results, total: body.hits.total.value}
+        return { results, total: body.hits.total.value }
     }
 
     async searchTextAll(args: ListingInput, docsIndexName: string, where?: any) {
         const results: any[] = []
         const condition = where ? where : this.buildTextGettingParams(args)
 
-        const query = where || args.search ? {wildcard: condition} : {
+        const query = where || args.search ? { wildcard: condition } : {
             match_all: {}
         }
 
@@ -166,7 +166,7 @@ export class SearchBase {
                     'order': args.sort.sortType
                 }
             }] : []
-        const {body} = await this.esService.search({
+        const { body } = await this.esService.search({
             index: docsIndexName,
             body: {
                 size: args.pagination.limit,
@@ -180,7 +180,7 @@ export class SearchBase {
             results.push(item._source)
         })
 
-        return {results, total: body.hits.total.value}
+        return { results, total: body.hits.total.value }
     }
 
     async updateByQuery(where: any, docsIndexName: string, updateData: any, nestedPrefix?: string) {
