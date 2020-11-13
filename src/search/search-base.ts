@@ -124,7 +124,7 @@ export class SearchBase {
         let arrMust: any[] = []
 
         for (const where of wheres) {
-            arrMust=[ ...arrMust, {match: where}]
+            arrMust = [...arrMust, { match: where }]
         }
 
         const { body } = await this.esService.search({
@@ -142,6 +142,42 @@ export class SearchBase {
         const hits = body.hits.hits
 
         return hits.length ? hits[0]._source : null
+    }
+
+    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[]) {
+        let arrMust: any[] = []
+        const results: any[] = []
+
+        for (const where of wheres) {
+            arrMust = [...arrMust, { match: where }]
+        }
+
+        const sort = args.sort ? [
+            {
+                [args.sort.sortBy]: {
+                    'order': args.sort.sortType
+                }
+            }] : []
+        const { body } = await this.esService.search({
+            index: docsIndexName,
+            body: {
+                size: args.pagination.limit,
+                from: args.pagination.offset,
+                query: {
+                    bool: {
+                        must: arrMust
+                    }
+                },
+                sort: sort
+            },
+        })
+
+        const hits = body.hits.hits
+        hits.map((item: { _source: any }) => {
+            results.push(item._source)
+        })
+
+        return { results, total: body.hits.total.value }
     }
 
     async searchAll(args: ListingInput, docsIndexName: string, where?: WhereInput) {
