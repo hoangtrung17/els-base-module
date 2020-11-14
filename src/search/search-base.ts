@@ -1,5 +1,6 @@
 import { BadRequestException } from '@nestjs/common'
 import { ElasticsearchService } from '@nestjs/elasticsearch'
+import { RangeInput } from '../dto/range-input'
 import { ListingInput, PaginationInput, WhereInput } from "../dto/listing.input";
 
 export class SearchBase {
@@ -144,12 +145,15 @@ export class SearchBase {
         return hits.length ? hits[0]._source : null
     }
 
-    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[]) {
+    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[], range?: RangeInput) {
         let arrMust: any[] = []
         const results: any[] = []
 
-        for (const where of wheres) {
-            arrMust = [...arrMust, { match: where }]
+        for (const match of wheres) {
+            arrMust = [...arrMust, { match }]
+        }
+        if(range) {
+            arrMust = [...arrMust, {range}]
         }
 
         const sort = args.sort ? [
@@ -182,6 +186,7 @@ export class SearchBase {
 
     async searchAll(args: ListingInput, docsIndexName: string, where?: WhereInput) {
         const results: any[] = []
+        where = where ? where : args.where
         const condition = where ? where : this.buildGettingParams(args)
 
         const query = where || args.search ? { match: condition } : {
