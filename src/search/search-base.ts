@@ -51,7 +51,7 @@ export class SearchBase {
                 if (err) {
                     throw new BadRequestException(err.message)
                 }
-            },
+            }
         )
     }
 
@@ -152,8 +152,8 @@ export class SearchBase {
         for (const match of wheres) {
             arrMust = [...arrMust, { match }]
         }
-        if(range) {
-            arrMust = [...arrMust, {range}]
+        if (range) {
+            arrMust = [...arrMust, { range }]
         }
 
         const sort = args.sort ? [
@@ -264,6 +264,11 @@ export class SearchBase {
                 script: {
                     inline: script
                 }
+            }
+        },
+        (err) => {
+            if (err) {
+                throw new BadRequestException(err.message)
             }
         })
     }
