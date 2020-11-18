@@ -64,22 +64,26 @@ export class SearchBase {
             }
         }
 
-        const { body } = await this.esService.search({
-            index: docsIndexName,
-            body: {
-                size: args.limit,
-                from: args.offset,
-                query: condition
-            },
-        })
-        const hits = body.hits.hits
-        hits.map((item: { _source: any }) => {
-            results.push(item._source)
-        })
-
-        return args.limit === 1 ? { results, total: body.hits.total.value, data: results[0] } : {
-            results,
-            total: body.hits.total.value
+        try {
+            const { body } = await this.esService.search({
+                index: docsIndexName,
+                body: {
+                    size: args.limit,
+                    from: args.offset,
+                    query: condition
+                },
+            })
+            const hits = body.hits.hits
+            hits.map((item: { _source: any }) => {
+                results.push(item._source)
+            })
+    
+            return args.limit === 1 ? { results, total: body.hits.total.value, data: results[0] } : {
+                results,
+                total: body.hits.total.value
+            }
+        } catch (error) {
+            return error
         }
     }
 
@@ -90,17 +94,21 @@ export class SearchBase {
             }
         }
 
-        const { body } = await this.esService.search({
-            index: docsIndexName,
-            body: {
-                size: 1,
-                from: 0,
-                query: condition
-            },
-        })
-        const hits = body.hits.hits
-
-        return hits.length ? hits[0]._source : null
+        try {
+            const { body } = await this.esService.search({
+                index: docsIndexName,
+                body: {
+                    size: 1,
+                    from: 0,
+                    query: condition
+                },
+            })
+            const hits = body.hits.hits
+    
+            return hits.length ? hits[0]._source : null
+        } catch (error) {
+            return error
+        }
     }
 
     async findOneByQuery(where: WhereInput, docsIndexName: string) {
@@ -108,17 +116,21 @@ export class SearchBase {
             match: where
         }
 
-        const { body } = await this.esService.search({
-            index: docsIndexName,
-            body: {
-                size: 1,
-                from: 0,
-                query: condition
-            },
-        })
-        const hits = body.hits.hits
-
-        return hits.length ? hits[0]._source : null
+        try {
+            const { body } = await this.esService.search({
+                index: docsIndexName,
+                body: {
+                    size: 1,
+                    from: 0,
+                    query: condition
+                },
+            })
+            const hits = body.hits.hits
+    
+            return hits.length ? hits[0]._source : null
+        } catch (error) {
+            return error
+        }
     }
 
     async findOneByManyWhere(wheres: WhereInput[], docsIndexName: string) {
@@ -128,21 +140,25 @@ export class SearchBase {
             arrMust = [...arrMust, { match: where }]
         }
 
-        const { body } = await this.esService.search({
-            index: docsIndexName,
-            body: {
-                size: 1,
-                from: 0,
-                query: {
-                    bool: {
-                        must: arrMust
+        try {
+            const { body } = await this.esService.search({
+                index: docsIndexName,
+                body: {
+                    size: 1,
+                    from: 0,
+                    query: {
+                        bool: {
+                            must: arrMust
+                        }
                     }
-                }
-            },
-        })
-        const hits = body.hits.hits
-
-        return hits.length ? hits[0]._source : null
+                },
+            })
+            const hits = body.hits.hits
+    
+            return hits.length ? hits[0]._source : null
+        } catch (error) {
+            return error
+        }
     }
 
     async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[], range?: RangeInput) {
@@ -162,26 +178,30 @@ export class SearchBase {
                     'order': args.sort.sortType
                 }
             }] : []
-        const { body } = await this.esService.search({
-            index: docsIndexName,
-            body: {
-                size: args.pagination.limit,
-                from: args.pagination.offset,
-                query: {
-                    bool: {
-                        must: arrMust
-                    }
+        try {
+            const { body } = await this.esService.search({
+                index: docsIndexName,
+                body: {
+                    size: args.pagination.limit,
+                    from: args.pagination.offset,
+                    query: {
+                        bool: {
+                            must: arrMust
+                        }
+                    },
+                    sort: sort
                 },
-                sort: sort
-            },
-        })
-
-        const hits = body.hits.hits
-        hits.map((item: { _source: any }) => {
-            results.push(item._source)
-        })
-
-        return { results, total: body.hits.total.value }
+            })
+    
+            const hits = body.hits.hits
+            hits.map((item: { _source: any }) => {
+                results.push(item._source)
+            })
+    
+            return { results, total: body.hits.total.value }
+        } catch (error) {
+            return error
+        }
     }
 
     async searchAll(args: ListingInput, docsIndexName: string, where?: WhereInput) {
@@ -199,21 +219,39 @@ export class SearchBase {
                     'order': args.sort.sortType
                 }
             }] : []
-        const { body } = await this.esService.search({
-            index: docsIndexName,
-            body: {
-                size: args.pagination.limit,
-                from: args.pagination.offset,
-                query: query,
-                sort: sort
-            },
-        })
-        const hits = body.hits.hits
-        hits.map((item: { _source: any }) => {
-            results.push(item._source)
-        })
-
-        return { results, total: body.hits.total.value }
+        try {
+            const { body } = await this.esService.search({
+                index: docsIndexName,
+                body: {
+                    size: args.pagination.limit,
+                    from: args.pagination.offset,
+                    query: query,
+                    sort: sort
+                },
+            })
+            const hits = body.hits.hits
+            hits.map((item: { _source: any }) => {
+                results.push(item._source)
+            })
+    
+            return { results, total: body.hits.total.value }
+        } catch (error) {
+            const { body } = await this.esService.search({
+                index: docsIndexName,
+                body: {
+                    size: args.pagination.limit,
+                    from: args.pagination.offset,
+                    query: query,
+                    sort: sort
+                },
+            })
+            const hits = body.hits.hits
+            hits.map((item: { _source: any }) => {
+                results.push(item._source)
+            })
+    
+            return { results, total: body.hits.total.value }
+        }
     }
 
     async searchTextAll(args: ListingInput, docsIndexName: string, where?: any) {
@@ -230,21 +268,25 @@ export class SearchBase {
                     'order': args.sort.sortType
                 }
             }] : []
-        const { body } = await this.esService.search({
-            index: docsIndexName,
-            body: {
-                size: args.pagination.limit,
-                from: args.pagination.offset,
-                query: query,
-                sort: sort
-            },
-        })
-        const hits = body.hits.hits
-        hits.map((item: { _source: any }) => {
-            results.push(item._source)
-        })
-
-        return { results, total: body.hits.total.value }
+        try {
+            const { body } = await this.esService.search({
+                index: docsIndexName,
+                body: {
+                    size: args.pagination.limit,
+                    from: args.pagination.offset,
+                    query: query,
+                    sort: sort
+                },
+            })
+            const hits = body.hits.hits
+            hits.map((item: { _source: any }) => {
+                results.push(item._source)
+            })
+    
+            return { results, total: body.hits.total.value }
+        } catch (error) {
+            return error
+        }
     }
 
     async updateByQuery(where: any, docsIndexName: string, updateData: any, nestedPrefix?: string) {
@@ -253,35 +295,43 @@ export class SearchBase {
                 `${result} ctx._source.${nestedPrefix ? nestedPrefix + '.' + key : key}= '${value}';`
                 : `${result} ctx._source.${nestedPrefix ? nestedPrefix + '.' + key : key}= ${value};`
         }, '')
-
-        return this.esService.updateByQuery({
-            index: docsIndexName,
-            refresh: true,
-            body: {
-                query: {
-                    match: where
-                },
-                script: {
-                    inline: script
+        try {
+            return this.esService.updateByQuery({
+                index: docsIndexName,
+                refresh: true,
+                body: {
+                    query: {
+                        match: where
+                    },
+                    script: {
+                        inline: script
+                    }
                 }
-            }
-        },
-        (err) => {
-            if (err) {
-                throw new BadRequestException(err.message)
-            }
-        })
+            },
+            (err) => {
+                if (err) {
+                    throw new BadRequestException(err.message)
+                }
+                return err
+            })
+        } catch (error) {
+            return error
+        }
     }
 
     async remove(where: any, docsIndexName: string) {
-        this.esService.deleteByQuery({
-            index: docsIndexName,
-            body: {
-                query: {
-                    match: where
+        try {
+            return this.esService.deleteByQuery({
+                index: docsIndexName,
+                body: {
+                    query: {
+                        match: where
+                    }
                 }
-            }
-        })
+            })
+        } catch (error) {
+            return error
+        }
     }
 
     async parseAndPrepareData(docs: any[], docsIndexName: string) {
