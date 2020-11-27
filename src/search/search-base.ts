@@ -307,12 +307,6 @@ export class SearchBase {
                         inline: script
                     }
                 }
-            },
-            (err) => {
-                if (err) {
-                    throw new BadRequestException(err.message)
-                }
-                return err
             })
         } catch (error) {
             return error
