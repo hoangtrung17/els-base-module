@@ -293,12 +293,9 @@ export class SearchBase {
         const results: any[] = []
         if (args.search && args.search.length) {
             const query = {
-                multi_match: {
-                    "query": args.search[0].keyword,
-                    "minimum_should_match": "75%",
-                    "fields": [
-                        args.search[0].fieldName
-                    ]
+                "query_string": {
+                    "query": "*" + args.search[0].keyword + "*",
+                    "fields": [args.search[0].fieldName]
                 }
             }
             const sort = args.sort ? [
