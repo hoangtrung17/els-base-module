@@ -294,7 +294,7 @@ export class SearchBase {
         if (args.search && args.search.length) {
             const query = {
                 "query_string": {
-                    "query": "*" + args.search[0].keyword + "*",
+                    "query": args.search[0].keyword,
                     "default_field": args.search[0].fieldName
                 }
             }
