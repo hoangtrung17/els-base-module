@@ -77,7 +77,7 @@ export class SearchBase {
             hits.map((item: { _source: any }) => {
                 results.push(item._source)
             })
-    
+
             return args.limit === 1 ? { results, total: body.hits.total.value, data: results[0] } : {
                 results,
                 total: body.hits.total.value
@@ -104,7 +104,7 @@ export class SearchBase {
                 },
             })
             const hits = body.hits.hits
-    
+
             return hits.length ? hits[0]._source : null
         } catch (error) {
             return error
@@ -126,7 +126,7 @@ export class SearchBase {
                 },
             })
             const hits = body.hits.hits
-    
+
             return hits.length ? hits[0]._source : null
         } catch (error) {
             return error
@@ -154,7 +154,7 @@ export class SearchBase {
                 },
             })
             const hits = body.hits.hits
-    
+
             return hits.length ? hits[0]._source : null
         } catch (error) {
             return error
@@ -192,12 +192,12 @@ export class SearchBase {
                     sort: sort
                 },
             })
-    
+
             const hits = body.hits.hits
             hits.map((item: { _source: any }) => {
                 results.push(item._source)
             })
-    
+
             return { results, total: body.hits.total.value }
         } catch (error) {
             return error
@@ -233,7 +233,7 @@ export class SearchBase {
             hits.map((item: { _source: any }) => {
                 results.push(item._source)
             })
-    
+
             return { results, total: body.hits.total.value }
         } catch (error) {
             const { body } = await this.esService.search({
@@ -249,7 +249,7 @@ export class SearchBase {
             hits.map((item: { _source: any }) => {
                 results.push(item._source)
             })
-    
+
             return { results, total: body.hits.total.value }
         }
     }
@@ -282,11 +282,54 @@ export class SearchBase {
             hits.map((item: { _source: any }) => {
                 results.push(item._source)
             })
-    
+
             return { results, total: body.hits.total.value }
         } catch (error) {
             return error
         }
+    }
+
+    async searchRelativeTextAll(args: ListingInput, docsIndexName: string) {
+        const results: any[] = []
+        if (args.search && args.search.length) {
+            const query = {
+                multi_match: {
+                    "query": args.search[0].keyword,
+                    "minimum_should_match": "75%",
+                    "fields": [
+                        args.search[0].fieldName
+                    ]
+                }
+            }
+            const sort = args.sort ? [
+                {
+                    [args.sort.sortBy]: {
+                        'order': args.sort.sortType
+                    }
+                }] : []
+            try {
+                const { body } = await this.esService.search({
+                    index: docsIndexName,
+                    body: {
+                        size: args.pagination.limit,
+                        from: args.pagination.offset,
+                        query: query,
+                        sort: sort
+                    },
+                })
+                const hits = body.hits.hits
+                hits.map((item: { _source: any }) => {
+                    results.push(item._source)
+                })
+
+                return { results, total: body.hits.total.value }
+            } catch (error) {
+                return error
+            }
+        } else {
+            return { results: [], total: 0 }
+        }
+
     }
 
     async updateByQuery(where: any, docsIndexName: string, updateData: any, nestedPrefix?: string) {
