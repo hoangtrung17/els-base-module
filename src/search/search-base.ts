@@ -209,7 +209,7 @@ export class SearchBase {
         where = where ? where : args.where
         const condition = where ? where : this.buildGettingParams(args)
 
-        const query = where || args.search ? { match: condition } : {
+        const query = where || (args.search && args.search.length) ? { match: condition } : {
             match_all: {}
         }
 
@@ -258,7 +258,7 @@ export class SearchBase {
         const results: any[] = []
         const condition = where ? where : this.buildTextGettingParams(args)
 
-        const query = where || args.search ? { wildcard: condition } : {
+        const query = where || (args.search && args.search.length) ? { wildcard: condition } : {
             match_all: {}
         }
 
