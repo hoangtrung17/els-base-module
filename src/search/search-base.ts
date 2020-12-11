@@ -2,6 +2,7 @@ import { BadRequestException } from '@nestjs/common'
 import { ElasticsearchService } from '@nestjs/elasticsearch'
 import { RangeInput } from '../dto/range-input'
 import { ListingInput, PaginationInput, WhereInput } from "../dto/listing.input";
+import { SearchInput } from '@tony_win2win/common';
 
 export class SearchBase {
     constructor(public readonly esService: ElasticsearchService) {
@@ -161,7 +162,7 @@ export class SearchBase {
         }
     }
 
-    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[], range?: RangeInput) {
+    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[], range?: RangeInput, keyword?: SearchInput) {
         let arrMust: any[] = []
         const results: any[] = []
 
@@ -170,6 +171,17 @@ export class SearchBase {
         }
         if (range) {
             arrMust = [...arrMust, { range }]
+        }
+
+        if (keyword) {
+            const wildcard = {
+                [keyword.fieldName]: {
+                    value: '*' + keyword.keyword + '*',
+                    boost: 1.0,
+                    rewrite: "constant_score"
+                }
+            }
+            arrMust = [...arrMust, { wildcard }]
         }
 
         const sort = args.sort ? [
