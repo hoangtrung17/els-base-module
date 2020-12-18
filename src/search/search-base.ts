@@ -162,14 +162,15 @@ export class SearchBase {
         }
     }
 
-    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[], range?: RangeInput, keyword?: SearchInput) {
+    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[], ranges: RangeInput[], keyword?: SearchInput) {
         let arrMust: any[] = []
         const results: any[] = []
 
         for (const match of wheres) {
             arrMust = [...arrMust, { match }]
         }
-        if (range) {
+
+        for (const range of ranges) {
             arrMust = [...arrMust, { range }]
         }
 
