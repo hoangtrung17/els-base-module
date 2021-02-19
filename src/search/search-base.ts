@@ -176,8 +176,8 @@ export class SearchBase {
         }
 
         if(must_not_fields) {
-            for (const must_not of must_not_fields) {
-                arrMustNot = [...arrMustNot, { must_not }]
+            for (const match of must_not_fields) {
+                arrMustNot = [...arrMustNot, { match }]
             }
         }
 
