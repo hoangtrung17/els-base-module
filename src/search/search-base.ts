@@ -162,7 +162,7 @@ export class SearchBase {
         }
     }
 
-    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[], ranges: RangeInput[], keyword?: SearchInput, must_not_fields: WhereInput[]) {
+    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[], ranges: RangeInput[], keyword?: SearchInput, must_not_fields?: WhereInput[]) {
         let arrMust: any[] = []
         let arrMustNot: any[] = []
         const results: any[] = []
@@ -175,8 +175,10 @@ export class SearchBase {
             arrMust = [...arrMust, { range }]
         }
 
-        for (const must_not of must_not_fields) {
-            arrMust = [...arrMustNot, { must_not }]
+        if(must_not_fields) {
+            for (const must_not of must_not_fields) {
+                arrMust = [...arrMustNot, { must_not }]
+            }
         }
 
         if (keyword) {
