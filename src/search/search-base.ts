@@ -162,8 +162,9 @@ export class SearchBase {
         }
     }
 
-    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[], ranges: RangeInput[], keyword?: SearchInput) {
+    async searchAllByManyWhere(args: ListingInput, docsIndexName: string, wheres: WhereInput[], ranges: RangeInput[], keyword?: SearchInput, must_not_fields: WhereInput[]) {
         let arrMust: any[] = []
+        let arrMustNot: any[] = []
         const results: any[] = []
 
         for (const match of wheres) {
@@ -172,6 +173,10 @@ export class SearchBase {
 
         for (const range of ranges) {
             arrMust = [...arrMust, { range }]
+        }
+
+        for (const must_not of must_not_fields) {
+            arrMust = [...arrMustNot, { must_not }]
         }
 
         if (keyword) {
@@ -199,7 +204,8 @@ export class SearchBase {
                     from: args.pagination.offset,
                     query: {
                         bool: {
-                            must: arrMust
+                            must: arrMust,
+                            must_not: arrMustNot
                         }
                     },
                     sort: sort
