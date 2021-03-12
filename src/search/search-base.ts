@@ -88,6 +88,40 @@ export class SearchBase {
         }
     }
 
+
+    async searchByTerms(args: PaginationInput, docsIndexName: string, wheres: WhereInput[]) {
+        const results: any[] = []
+
+        let arrTerms: any[] = []
+
+        for (const where of wheres) {
+            arrTerms = [...arrTerms, { term: where }]
+        }
+
+        try {
+            const { body } = await this.esService.search({
+                index: docsIndexName,
+                body: {
+                    size: args.limit,
+                    from: args.offset,
+                    query: {
+                        bool: {
+                            should: arrTerms
+                        }
+                    }
+                },
+            })
+            const hits = body.hits.hits
+            hits.map((item: { _source: any }) => {
+                results.push(item._source)
+            })
+
+            return { results, total: body.hits.total.value }
+        } catch (error) {
+            return error
+        }
+    }
+
     async findOneById(docsIndexName: string, id: string) {
         const condition = {
             ids: {
